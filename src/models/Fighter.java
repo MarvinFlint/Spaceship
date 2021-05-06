@@ -60,8 +60,11 @@ public class Fighter extends MannedSpaceship {
     public void board(Astronaut a) throws BoardException {
         // check whether the Astronaut has a g-Endurance of less than 5
         if(a.getenduresG() <= 5){
+            throw new BoardException("Astronauts need at least a G-endurance of 5 to board a fighter");
+            /* old error handling
             System.out.println(a.getName() + " has not boarded the " + this.getDesignation());
             System.out.println("Astronauts need at least a G-endurance of 5 to board a fighter");
+            */
         }
         // if not, check if there is an available seat
         else if(this.usedSeats < seats){
@@ -71,7 +74,7 @@ public class Fighter extends MannedSpaceship {
         }
         // if there is no available seat, print an error message
         else{
-            throw new BoardException("Failed to board the " + this.getDesignation());
+            throw new BoardException(a.getName() + " failed to board the " + this.getDesignation() + ", no available seat.");
         }
     }
 

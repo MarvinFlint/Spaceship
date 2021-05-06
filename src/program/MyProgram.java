@@ -35,7 +35,7 @@ public class MyProgram {
         // create Astronaut objects
 
         Astronaut a1 = new Astronaut("Neil Armstrong", 6);
-        Astronaut a2 = new Astronaut("Buzz Aldrin", 5);
+        Astronaut a2 = new Astronaut("Buzz Aldrin", 7);
         Astronaut a3 = new Astronaut("Michael Collins", 6);
         Astronaut a4 = new Astronaut("Gary Bruckheimer");
         Astronaut a5 = new Astronaut("Hank Turner");
@@ -60,35 +60,51 @@ public class MyProgram {
             t1.manageLoad(5);
         }
         catch(LoadException e){
+            System.out.println(e.getMessage());
+        }
+
+        try{
+            t1.manageLoad(-3);
+        }
+        catch(LoadException e){
+            System.out.println(e.getMessage());
+        }
+        try{
+            t1.manageLoad(-5);
+        }
+        catch(LoadException e){
+            System.out.println(e.getMessage());
+        }
+
+        catch(LoadException e){
                 // save the amount of units previously loaded
-                int prevCurrentLoad = currentLoad;
+                int prevCurrentLoad = t1.getCurrentLoad();
                 // check how many units were tried to be withdrawn over the limit
-                int overDraft = currentLoad + loadModifier;
+                int overDraft = t1.getCurrentLoad() + loadModifier;
                 // set load to 0
-                currentLoad = 0;
+                t1.setCurrentLoad(0);
                 // send out the message
                 System.out.println("You only had " + prevCurrentLoad + " units in your ship, all of which were withdrawn. You went " + overDraft + " units over the limit.");
-                System.out.println("Your new load is " + currentLoad + " units.");
-                 
+                System.out.println("Your new load is " + t1.getCurrentLoad() + " units.");
         }
-        t1.manageLoad(-3);
-        t1.manageLoad(-5);
+
         System.out.println();
 
+        // add astronauts to ships
         try {
-            // add astronauts to ships
             f1.board(a1);
             f1.board(a2);
         }
         catch(BoardException e){
             System.out.println(e.getMessage());
         }
+
         try {
             // overload the f1
             f1.board(a3);
         }
         catch(BoardException e){
-            System.out.println(e.getMessage());
+            System.out.println(e.fillInStackTrace());
         }
         try {
             // make one of them exit...twice
@@ -96,7 +112,7 @@ public class MyProgram {
             f1.exit(a1);
         }
         catch(BoardException e){
-            System.out.println(e.getMessage());
+            System.out.println(e.fillInStackTrace());
         }
         try {
             // re-try
