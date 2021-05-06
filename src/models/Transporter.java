@@ -2,6 +2,7 @@
 package models;
 
 import exceptions.BoardException;
+import exceptions.LoadException;
 
 import java.util.ArrayList;
 
@@ -80,13 +81,13 @@ public final class Transporter extends MannedSpaceship {
 
     // BONUS TASK
     // a method to manage the load of a Transporter
-    public void manageLoad(int loadModifier){
+    public void manageLoad(int loadModifier) throws LoadException {
 
         // check whether the ship is getting loaded or unloaded. > 0 means getting loaded
         if(loadModifier > 0){
             // check if capacity is maxed out
             if(currentLoad == maxCapacity){
-                System.out.println("You are already at max capacity!");
+                throw new LoadException("You are already at max capacity!");
             }
             // check if the modified amount would go over the limit
             else if(currentLoad + loadModifier <= maxCapacity) {
@@ -97,14 +98,14 @@ public final class Transporter extends MannedSpaceship {
             else{
                 int overLoad = currentLoad + loadModifier - maxCapacity;
                 System.out.println("You are overloading the ship, please try a lower amount of units.");
-                System.out.println("Your current capcity is " + currentLoad + ", you went over the max capacity by " + overLoad + " units");
+                System.out.println("Your current capacity is " + currentLoad + ", you went over the max capacity by " + overLoad + " units");
             }
         }
         // check whether the ship is getting loaded or unloaded. < 0 means getting unloaded
         if(loadModifier < 0){
             // check if there are any units to unload
             if(currentLoad == 0){
-                System.out.println("You have no current load on your ship to withdraw!");
+                throw new LoadException("You have no current load on your ship to withdraw!");
             }
             // check if there are enough units to unload
             else if(currentLoad + loadModifier >= 0){
@@ -113,6 +114,8 @@ public final class Transporter extends MannedSpaceship {
             }
             // what if there aren't enough units
             else if(currentLoad + loadModifier < 0){
+                throw new LoadException("There aren't enough units to unload");
+                /* old error handling
                 // save the amount of units previously loaded
                 int prevCurrentLoad = currentLoad;
                 // check how many units were tried to be withdrawn over the limit
@@ -122,6 +125,7 @@ public final class Transporter extends MannedSpaceship {
                 // send out the message
                 System.out.println("You only had " + prevCurrentLoad + " units in your ship, all of which were withdrawn. You went " + overDraft + " units over the limit.");
                 System.out.println("Your new load is " + currentLoad + " units.");
+                 */
             }
         }
     }

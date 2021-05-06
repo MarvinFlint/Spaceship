@@ -3,6 +3,7 @@ package program;
 
 // imported packages
 import exceptions.BoardException;
+import exceptions.LoadException;
 import models.Astronaut;
 import models.Fighter;
 import models.Spaceship;
@@ -55,7 +56,21 @@ public class MyProgram {
         System.out.println();
 
         // manage load for a transporter
-        t1.manageLoad(5);
+        try {
+            t1.manageLoad(5);
+        }
+        catch(LoadException e){
+                // save the amount of units previously loaded
+                int prevCurrentLoad = currentLoad;
+                // check how many units were tried to be withdrawn over the limit
+                int overDraft = currentLoad + loadModifier;
+                // set load to 0
+                currentLoad = 0;
+                // send out the message
+                System.out.println("You only had " + prevCurrentLoad + " units in your ship, all of which were withdrawn. You went " + overDraft + " units over the limit.");
+                System.out.println("Your new load is " + currentLoad + " units.");
+                 
+        }
         t1.manageLoad(-3);
         t1.manageLoad(-5);
         System.out.println();
@@ -64,18 +79,34 @@ public class MyProgram {
             // add astronauts to ships
             f1.board(a1);
             f1.board(a2);
-            // overload the f1
-            f1.board(a3);
-            // make one of them exit...twice
-            f1.exit(a1);
-            f1.exit(a1);
-            // re-try
-            f1.board(a3);
-            System.out.println();
         }
         catch(BoardException e){
             System.out.println(e.getMessage());
         }
+        try {
+            // overload the f1
+            f1.board(a3);
+        }
+        catch(BoardException e){
+            System.out.println(e.getMessage());
+        }
+        try {
+            // make one of them exit...twice
+            f1.exit(a1);
+            f1.exit(a1);
+        }
+        catch(BoardException e){
+            System.out.println(e.getMessage());
+        }
+        try {
+            // re-try
+            f1.board(a3);
+        }
+        catch(BoardException e){
+            System.out.println(e.getMessage());
+        }
+        System.out.println();
+
         // board another spaceship
         try{
             t2.board(a4);

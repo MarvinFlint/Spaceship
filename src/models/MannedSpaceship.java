@@ -30,9 +30,9 @@ abstract class MannedSpaceship extends Spaceship{
     abstract void board(Astronaut a) throws BoardException;
 
     // exit is the same for every ship and thus can be defined here
-    public void exit(Astronaut a) {
+    public void exit(Astronaut a) throws BoardException{
         if(!crew.remove(a)){
-            System.out.println(a.getName() + " is currently not on the " + this.getDesignation());
+            throw new BoardException(a.getName() + " is currently not on the " + this.getDesignation());
         }
         else{
             System.out.println(a.getName() + " left the " + this.getDesignation());
